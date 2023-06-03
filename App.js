@@ -103,7 +103,8 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-      <BottomTabNavigator />
+    
+    <DrawerNavigator />
 
       </NavigationContainer>
       <ExpoStatusBar style="auto" />
