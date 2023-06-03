@@ -1,15 +1,21 @@
-name: End-to-end tests
-on: [push , pull_request]
+name: Build Android
+on:
+  push:
+    branches: [AND]
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build Android Release
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
         with:
-              start: npm run web
-             wait-on: 'http://localhost:8080'
+          name: release
+          path: android/app/build/outputs/apk/release/app-release.apk
