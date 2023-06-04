@@ -1,0 +1,34 @@
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Build and perform a CodePush update"
+  lane :codepush do |options|
+    gradle(task: "clean assembleRelease")
+
+    # Perform CodePush release
+    sh "npx code-push release-react MyOrg/MyApp-android android --description '#{options[:description]}' --mandatory #{options[:mandatory]}"
+
+    # You can also perform additional steps after the CodePush release if needed
+    # For example, you can upload the APK to a distribution service or notify users about the update
+
+    # Example: Upload APK to a distribution service
+    # sh "your_script.sh"
+
+    # Example: Notify users about the update
+    # sh "your_notification_script.sh"
+  end
+end
