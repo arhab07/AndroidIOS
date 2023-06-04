@@ -29,6 +29,8 @@ jobs:
 
       - name: Run Yarn Install
         run: |
+             cd ./packages/cloneUdemy/
+             npm i -g corepack
              yarn install             
       - name: Build application
         run: |
@@ -38,5 +40,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app
-          path: ./packages/app-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          path: ./packages/cloneUdemy/android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 3
