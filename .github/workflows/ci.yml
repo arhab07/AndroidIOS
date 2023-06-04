@@ -1,7 +1,7 @@
 name: Build Android
 on:
   push:
-    branches: [And]
+    branches: [AND]
 jobs:
   build:
     runs-on: ubuntu-latest
