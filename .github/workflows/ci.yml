@@ -19,3 +19,11 @@ jobs:
         with:
           name: release
           path: android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload application
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 3
+
