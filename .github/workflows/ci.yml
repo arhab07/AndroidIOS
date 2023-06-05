@@ -12,6 +12,5 @@ jobs:
         run: yarn
 
       - name: Deploy to CodePush
-        run: npx appcenter codepush release-react -a arhab07ah@gmail.com/cloneApp -d Staging -k ${{ secrets.CODEPUSH_DEPLOYMENT_KEY }}
-        env:
-          APPCENTER_ACCESS_TOKEN: ${{ secrets.APPCENTER_ACCESS_TOKEN }}
+        run:  appcenter codepush release-react -a arhab07ah@gmail.com/cloneApp -d Staging
+        
