@@ -11,5 +11,24 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Deploy to CodePush
-        run: appcenter codepush release-react -a arhab07ah@gmail.com/cloneApp -d Staging
+      - name: Build Android Release
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: release
+          path: android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload application
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 3
+      # name: Deploy with CodePush
+
+      # - name: Deploy to CodePush
+      #   run: npx appcenter codepush release-react -a Arhab Muhammad/cloneApp -d Staging -k ${{ secrets.CODEPUSH_DEPLOYMENT_KEY }}
+      #   env:
+      #     APPCENTER_ACCESS_TOKEN: ${{ secrets.APPCENTER_ACCESS_TOKEN }}
