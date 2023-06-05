@@ -1,3 +1,5 @@
+import codePush from "react-native-code-push";
+
 import React from 'react';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { theme } from "./src/infrastructure/theme";
@@ -99,7 +101,7 @@ const BottomTabNavigator = () => {
 
 
 
-export default function App() {
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
@@ -111,3 +113,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+export default codePush(App)
