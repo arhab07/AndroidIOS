@@ -45,6 +45,15 @@
   },
   "private": true,
   "main": "index.js",
-  "repository": "https://github.com/arhab07/cloneUdemy.git",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arhab07/cloneUdemy.git"
+  },
+  "license": "MIT",
+  "description": "Udemy Application Clone This is a clone of the Udemy application built using React Native and Expo. The project allows you to access Udemy's course catalog and explore various courses on your mobile device.",
+  "bugs": {
+    "url": "https://github.com/arhab07/cloneUdemy/issues"
+  },
+  "homepage": "https://github.com/arhab07/cloneUdemy#readme",
+  "author": ""
 }
