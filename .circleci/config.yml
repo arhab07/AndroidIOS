@@ -39,3 +39,18 @@ workflows:
   build-deploy:
     jobs:
       - build
+
+      - notify:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - AND
+          steps:
+            - run:
+                name: Calculate ETA
+                command: |
+                  echo "Estimated time of arrival (ETA):"
+                  echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"
+                  echo "Estimated completion time: $(date -d '+30 minutes' +'%Y-%m-%d %H:%M:%S')"
