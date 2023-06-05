@@ -2,38 +2,62 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/android:api-30-node
+      - image: circleci/node:14.17
     working_directory: ~/repo
 
     steps:
       - checkout
 
-      # Rest of your build steps...
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-
 
-      - store_artifacts:
-          path: path/to/your/apk
-          destination: release
-
-  distribute_ota:
-    docker:
-      - image: circleci/node:latest
-    steps:
       - run:
-          name: Distribute OTA
-          command: |
-            # Example command using Firebase App Distribution
-            curl -X POST \
-              -H "Authorization: Bearer $FIREBASE_TOKEN" \
-              -F "app=@path/to/your/apk" \
-              -F "release_notes=Updated version" \
-              "https://firebase.googleapis.com/v1beta1/{your_firebase_project}/releases"
+          name: Install dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Build
+          command: npm run build
+
+  e2e-tests:
+    docker:
+      - image: circleci/node:14.17
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-
+
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Run E2E tests
+          command: npm run e2e
 
 workflows:
   version: 2
-  build-deploy:
+  build-and-test:
     jobs:
       - build
-      - distribute_ota:
+      - e2e-tests:
           requires:
             - build
           filters:
