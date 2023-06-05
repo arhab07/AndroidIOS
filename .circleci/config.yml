@@ -14,46 +14,15 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: Install dependencies
-          command: yarn
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-
-      - run:
           name: Build Android Release
-          command: cd android && ./gradlew assembleRelease
+          command: ./gradlew assembleRelease
 
       - store_artifacts:
-          path: android/app/build/outputs/apk/release/
-          destination: release
-
-      - store_artifacts:
-          path: android/app/build/outputs/apk/debug/
-          destination: debug
-
-  notify:
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - run:
-          name: Calculate ETA
-          command: |
-            echo "Estimated time of arrival (ETA):"
-            echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"
-            echo "Estimated completion time: $(date -d '+30 minutes' +'%Y-%m-%d %H:%M:%S')"
+          path: app/build/outputs/apk/release/
+          destination: release-apk
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-      - notify:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - AND
