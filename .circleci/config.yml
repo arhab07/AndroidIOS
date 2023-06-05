@@ -34,12 +34,22 @@ jobs:
           path: android/app/build/outputs/apk/debug/
           destination: debug
 
+  notify:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - run:
+          name: Calculate ETA
+          command: |
+            echo "Estimated time of arrival (ETA):"
+            echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"
+            echo "Estimated completion time: $(date -d '+30 minutes' +'%Y-%m-%d %H:%M:%S')"
+
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-
       - notify:
           requires:
             - build
@@ -47,10 +57,3 @@ workflows:
             branches:
               only:
                 - AND
-          steps:
-            - run:
-                name: Calculate ETA
-                command: |
-                  echo "Estimated time of arrival (ETA):"
-                  echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"
-                  echo "Estimated completion time: $(date -d '+30 minutes' +'%Y-%m-%d %H:%M:%S')"
